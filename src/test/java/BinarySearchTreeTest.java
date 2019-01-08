@@ -21,7 +21,7 @@ class TreeNode {
     TreeNode right;
     TreeNode(int x) { val = x; }
 }
-class Solution1 {
+class RecursionSolution {
     public boolean isValidBST(TreeNode root) {
         if(root == null) {
             return true;
@@ -44,8 +44,7 @@ class Solution1 {
         }
     }
 }
-class SolutionIterator {
-    //SolutionIterator first version
+class IteratorSolution {
     public boolean isValidBST(TreeNode root) {
         if(root == null) {
             return true;
@@ -56,7 +55,7 @@ class SolutionIterator {
         LinkedList<Integer> lowerStack = new LinkedList<>();
         stack.add(root);
         upperStack.add(null);
-        upperStack.add(null);
+        lowerStack.add(null);
         while(!stack.isEmpty()) {
             TreeNode treeNodeTop = stack.poll();
             Integer upper = upperStack.poll();
@@ -65,22 +64,24 @@ class SolutionIterator {
                 if(treeNodeTop.right.val <= treeNodeTop.val) {
                     return false;
                 }
-                if(lower != null && lower >= treeNodeTop.right.val) {
+                if(upper != null && upper <= treeNodeTop.right.val) {
                     return false;
                 }
                 stack.add(treeNodeTop.right);
                 lowerStack.add(treeNodeTop.val);
+                upperStack.add(upper);
             }
 
             if(treeNodeTop.left != null) {
                 if(treeNodeTop.left.val >= treeNodeTop.val) {
                     return false;
                 }
-                if(upper != null && upper <= treeNodeTop.left.val) {
+                if(lower != null && lower >= treeNodeTop.left.val) {
                     return false;
                 }
                 stack.add(treeNodeTop.left);
                 upperStack.add(treeNodeTop.val);
+                lowerStack.add(lower);
             }
 
         }
